@@ -6,6 +6,16 @@ tags: [VIM, NVIM]
 excerpt: VIM多光标插件 —— vim-visual-multi 的配置和使用，以及日常工作中的应用
 mermaid: false
 ---
+<!-- markdown-toc GFM -->
+
+* [插件简介 mg979/vim-visual-multi](#插件简介-mg979vim-visual-multi)
+* [安装](#安装)
+* [配置](#配置)
+* [基本概念](#基本概念)
+* [使用案例](#使用案例)
+* [PS](#ps)
+
+<!-- markdown-toc -->
 
 ## 插件简介 [mg979/vim-visual-multi](https://github.com/mg979/vim-visual-multi)
 
@@ -55,7 +65,7 @@ mermaid: false
       " ['Remove Region']       -> 移除当前光标
 ```
 
-## **基本概念**
+## 基本概念
 
 **!!!重要!!!**
 **!!!重要!!!**
