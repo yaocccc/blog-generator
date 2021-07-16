@@ -6,6 +6,13 @@ tags: MYSQL
 excerpt: MYSQL语法实现需求, 唯一索引冲突时更新，不冲突时插入
 ---
 
+<!-- markdown-toc GitLab -->
+
+* [需求分析](#需求分析)
+* [直接上结论](#直接上结论)
+
+<!-- markdown-toc -->
+
 ## 需求分析
 
 ```plaintext
@@ -20,5 +27,3 @@ excerpt: MYSQL语法实现需求, 唯一索引冲突时更新，不冲突时插�
 INSERT INTO TABLENAME …… ON DUPLICATE KEY UPDATE ……
 PS: 该语法为MYSQL特有语法，不是SQL标准语法
 ```
-
-## 解析
