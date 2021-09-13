@@ -1,0 +1,225 @@
+---
+title: 本地与SSH远程同步VIM剪切板
+date: 2021-09-09 18:34:24
+categories: LINUX
+tags: [LINUX, SSH, VIM]
+excerpt: 也许是最优的同步本地和ssh远程系统剪贴板的解决方案 基于lemonade
+---
+
+<!-- markdown-toc GitLab -->
+
+* [本地与SSH远程同步VIM剪切板](#本地与ssh远程同步vim剪切板)
+* [先说怎么做](#先说怎么做)
+  * [(本地)服务端操作](#本地服务端操作)
+  * [(远程)客户端操作](#远程客户端操作)
+  * [本地远程访问SSH远程](#本地远程访问ssh远程)
+* [再说为什么](#再说为什么)
+  * [常见linux的系统剪切板如何实现](#常见linux的系统剪切板如何实现)
+  * [vim如何和系统剪切板交互](#vim如何和系统剪切板交互)
+  * [lemonada是什么](#lemonada是什么)
+  * [SSH -R 参数做了一个什么事情](#ssh-r-参数做了一个什么事情)
+* [大致实现调用图](#大致实现调用图)
+
+<!-- markdown-toc -->
+
+## 本地与SSH远程同步VIM剪切板
+
+经常有朋友困扰 如何同步本地和ssh远程的系统剪切板 让两边编辑文件时能有最同步的体验
+
+本文 也许是最优的同步本地和ssh远程系统剪贴板的解决方案
+
+## 先说怎么做
+
+### (本地)服务端操作
+
+```plaintext
+  从 https://github.com/lemonade-command/lemonade/releases 下载自己可用的lemonade版本
+  例如我是linux直接下载 lemonade_linux_386.tar.gz 包
+
+  gzip -d lemonade_linux_386.tar.gz
+  tar -xvf lemonade_linux_386.tar.gz
+
+  得到 lemonada 可执行文件
+  本地启动 lemonada 可执行文件服务端
+
+  ./lemonada server
+```
+
+### (远程)客户端操作
+
+```plaintext
+  同理 下载对应系统的lemonada 可执行文件 放置在 /usr/bin 目录下即可
+```
+
+### 本地远程访问SSH远程
+
+```plaintext
+  ssh -R 2489:127.0.0.1:2489 user@host
+
+  然后就可以享受两端同步的剪切板了
+```
+
+## 再说为什么
+
+### 常见linux的系统剪切板如何实现
+
+```plaintext
+  剪切板是什么 -- 一个用于存放、提供临时剪切数据的地方
+  而常见的linux发行版由 xclip 提供 剪切板能力
+
+  其具体表现为
+    xclip -o -selection any          -- 输出剪切板any分区内的内容
+    echo 123 | xclip -selection any  -- 将123写入到剪切板any分区 可再用xclip -o -selection any取出
+
+  大致可以这么理解 例如当我们使用了 ctrl + c 按键时，也是用 对应的应用程序调用 xclip 命令完成复制
+  ctrl + v 时亦是从中取得数据完成粘贴动作
+
+  而 xclip 程序 依赖于 xserver，这意味着你远程ssh客户端时，因为其不具备 xserver 的gui界面
+  所以一般来说，终端交互的ssh远程服务器 xclip命令是完全不可用的
+  使用命令 xclip -o
+  会得到类似错误输出 Error: Can't open display: (null)
+
+  其他系统也是类似的底层实现
+    mac系统一般基于 pbcopy pbpaste命令实现
+    linux一般为xclip或xsel或wl-copy、wl-paste实现
+    windows则为win32yank.exe
+```
+
+### vim如何和系统剪切板交互
+
+```plaintext
+  vim的剪切板实现部分代码见 /usr/share/nvim/runtime/autoload/provider/clipboard.vim
+
+  当vim支持了
+    set clipboard=unnamed
+    set clipboard+=unnamedplus
+  特性时
+
+  可以见下面这一段代码
+```
+
+```VimScript
+function! provider#clipboard#Executable() abort
+  if exists('g:clipboard')
+    if type({}) isnot# type(g:clipboard)
+          \ || type({}) isnot# type(get(g:clipboard, 'copy', v:null))
+          \ || type({}) isnot# type(get(g:clipboard, 'paste', v:null))
+      let s:err = 'clipboard: invalid g:clipboard'
+      return ''
+    endif
+
+    let s:copy = {}
+    let s:copy['+'] = s:split_cmd(get(g:clipboard.copy, '+', v:null))
+    let s:copy['*'] = s:split_cmd(get(g:clipboard.copy, '*', v:null))
+
+    let s:paste = {}
+    let s:paste['+'] = s:split_cmd(get(g:clipboard.paste, '+', v:null))
+    let s:paste['*'] = s:split_cmd(get(g:clipboard.paste, '*', v:null))
+
+    let s:cache_enabled = get(g:clipboard, 'cache_enabled', 0)
+    return get(g:clipboard, 'name', 'g:clipboard')
+  elseif has('mac')
+    let s:copy['+'] = ['pbcopy']
+    let s:paste['+'] = ['pbpaste']
+    let s:copy['*'] = s:copy['+']
+    let s:paste['*'] = s:paste['+']
+    let s:cache_enabled = 0
+    return 'pbcopy'
+  elseif !empty($WAYLAND_DISPLAY) && executable('wl-copy') && executable('wl-paste')
+    let s:copy['+'] = ['wl-copy', '--foreground', '--type', 'text/plain']
+    let s:paste['+'] = ['wl-paste', '--no-newline']
+    let s:copy['*'] = ['wl-copy', '--foreground', '--primary', '--type', 'text/plain']
+    let s:paste['*'] = ['wl-paste', '--no-newline', '--primary']
+    return 'wl-copy'
+  elseif !empty($DISPLAY) && executable('xclip')
+    let s:copy['+'] = ['xclip', '-quiet', '-i', '-selection', 'clipboard']
+    let s:paste['+'] = ['xclip', '-o', '-selection', 'clipboard']
+    let s:copy['*'] = ['xclip', '-quiet', '-i', '-selection', 'primary']
+    let s:paste['*'] = ['xclip', '-o', '-selection', 'primary']
+    return 'xclip'
+  elseif !empty($DISPLAY) && executable('xsel') && s:cmd_ok('xsel -o -b')
+    let s:copy['+'] = ['xsel', '--nodetach', '-i', '-b']
+    let s:paste['+'] = ['xsel', '-o', '-b']
+    let s:copy['*'] = ['xsel', '--nodetach', '-i', '-p']
+    let s:paste['*'] = ['xsel', '-o', '-p']
+    return 'xsel'
+  elseif executable('lemonade')
+    let s:copy['+'] = ['lemonade', 'copy']
+    let s:paste['+'] = ['lemonade', 'paste']
+    let s:copy['*'] = ['lemonade', 'copy']
+    let s:paste['*'] = ['lemonade', 'paste']
+    return 'lemonade'
+  elseif executable('doitclient')
+    let s:copy['+'] = ['doitclient', 'wclip']
+    let s:paste['+'] = ['doitclient', 'wclip', '-r']
+    let s:copy['*'] = s:copy['+']
+    let s:paste['*'] = s:paste['+']
+    return 'doitclient'
+  elseif executable('win32yank.exe')
+    if has('wsl') && getftype(exepath('win32yank.exe')) == 'link'
+      let win32yank = resolve(exepath('win32yank.exe'))
+    else
+      let win32yank = 'win32yank.exe'
+    endif
+    let s:copy['+'] = [win32yank, '-i', '--crlf']
+    let s:paste['+'] = [win32yank, '-o', '--lf']
+    let s:copy['*'] = s:copy['+']
+    let s:paste['*'] = s:paste['+']
+    return 'win32yank'
+  elseif executable('termux-clipboard-set')
+    let s:copy['+'] = ['termux-clipboard-set']
+    let s:paste['+'] = ['termux-clipboard-get']
+    let s:copy['*'] = s:copy['+']
+    let s:paste['*'] = s:paste['+']
+    return 'termux-clipboard'
+  elseif !empty($TMUX) && executable('tmux')
+    let s:copy['+'] = ['tmux', 'load-buffer', '-']
+    let s:paste['+'] = ['tmux', 'save-buffer', '-']
+    let s:copy['*'] = s:copy['+']
+    let s:paste['*'] = s:paste['+']
+    return 'tmux'
+  endif
+
+  let s:err = 'clipboard: No clipboard tool. :help clipboard'
+  return ''
+endfunction
+```
+
+```plaintext
+  大致可知 vim也是通过本文件的代码来调用的外部命令实现的 剪切板的赋值和读取
+
+  其中默认支持了lemonada的实现(当为linux且xclip不可用 lemonada可用时)
+
+  当触发复制、粘贴操作时，就会调用对应的外部命令还获取值
+```
+
+### lemonada是什么
+
+```plaintext
+  https://github.com/lemonade-command/lemonade
+
+  Lemonade is a remote utility tool. (copy, paste and open browser) over TCP.
+
+  是一个利用TCP实现远程本地 复制 粘贴的 命令行工具
+
+  如果需要修改一些lemonada的参数，请参照项目说明
+
+  大致实现步骤为 在你本地启动 lemonada 服务端，默认端口为 2489
+  然后通过 ssh -R 2489:127.0.0.1:2489 user@host 通过代理形式登录到ssh远程，此时本地远程2489端口打通
+  确保 ssh 远程的 lemonada bin文件可用即可
+  每次触发 复制粘贴 动作时，都会通过该bin文件到服务端进行读取或写入操作
+```
+
+### SSH -R 参数做了一个什么事情
+
+```plaintext
+  ssh -R HostC:PortC:HostB:PortB  user@HostC
+
+  远端启动端口，把远端端口数据转发到本地。
+
+  HostA 将自己可以访问的 HostB:PortB 暴露给外网服务器 HostC:PortC，在 HostA 上运行：
+```
+
+## 大致实现调用图
+
+![001](../img/本地与SSH远程同步VIM剪切板/001.png)
