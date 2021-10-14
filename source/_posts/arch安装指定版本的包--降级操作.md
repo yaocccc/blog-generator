@@ -1,0 +1,73 @@
+---
+title: arch安装指定版本的包--降级操作
+date: 2021-10-14 17:56:52
+categories: LINUX
+tags: [LINUX]
+excerpt: 记录一次arch linux升级的事故 最终以降级部分包版本解决
+---
+
+<!-- markdown-toc GitLab -->
+
+* [ARCH LINUX 包版本降级操作](#arch-linux-包版本降级操作)
+  * [pacman 安装指定版本包](#pacman-安装指定版本包)
+    * [从缓存包中安装](#从缓存包中安装)
+    * [从仓库中安装](#从仓库中安装)
+  * [yay 安装指定版本包](#yay-安装指定版本包)
+  * [忽略指定包版本更新](#忽略指定包版本更新)
+  * [实际操作](#实际操作)
+
+<!-- markdown-toc -->
+
+## ARCH LINUX 包版本降级操作
+
+本文分别描述 pacman 和 yay 如何安装历史版本的包
+
+[参考自:Arch_Linux_Archive#How_to_downgrade_one_package](https://wiki.archlinux.org/title/Arch_Linux_Archive#How_to_downgrade_one_package)
+
+### pacman 安装指定版本包
+
+#### 从缓存包中安装
+
+```plaintext
+  cd /var/cache/pacman/pkg
+  ls | grep pkgname
+  sudo pacman -U packagename-version.pkg.tar.xz
+```
+
+#### 从仓库中安装
+
+```plaintext
+  到 https://archive.archlinux.org/packages 找到自己对应的包的链接
+  sudo pacman -U https://archive.archlinux.org/packages/.../packagename.pkg.tar.xz
+```
+
+### yay 安装指定版本包
+
+```plaintext
+  cd ~/.cache/yay/pkg
+
+  yay -U pkgname-version.pkg.tar.zst
+```
+
+### 忽略指定包版本更新
+
+```plaintext
+  vim /etc/pacman.conf
+
+  在 [options] 下添加
+  IgnorePkg = pkg1 pkg2 ...
+```
+
+### 实际操作
+
+本次遭遇bluez版本更新后发生错误 进行了bluez版本降级操作
+
+```shell
+  cd /var/cache/pacman/pkg
+  sudo pacman -U $( ls |grep bluez | grep 5.61 | grep -v sig)
+
+  vim /etc/pacman.conf
+
+  [options]
+  IgnorePkg = bluez bluez-cups bluez-hid2hci bluez-libs bluez-plugins bluez-utils
+```
