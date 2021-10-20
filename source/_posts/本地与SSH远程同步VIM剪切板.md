@@ -222,4 +222,4 @@ endfunction
 
 ## 大致实现调用图
 
-![001](/img/本地与SSH远程同步VIM剪切板/001.png)
+![调用图](/img/本地与SSH远程同步VIM剪切板/001.png)

@@ -131,7 +131,7 @@ mermaid: false
   ...
 ```
 
-![案例1](/img/vim多光标插件--效率MAX/0001.gif)
+![案例1](/img/vim多光标插件--效率MAX/001.gif)
 
 ```plaintext
   案例2: 将 124行的 let 改成 const
@@ -154,7 +154,7 @@ mermaid: false
   ...
 ```
 
-![案例2](/img/vim多光标插件--效率MAX/0002.gif)
+![案例2](/img/vim多光标插件--效率MAX/002.gif)
 
 ```plaintext
   案例3: 将文本内容改成
@@ -186,7 +186,7 @@ mermaid: false
   ...
 ```
 
-![案例3](/img/vim多光标插件--效率MAX/0003.gif)
+![案例3](/img/vim多光标插件--效率MAX/003.gif)
 
 ## PS
 
