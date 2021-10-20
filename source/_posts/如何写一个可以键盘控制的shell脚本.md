@@ -21,10 +21,9 @@ excerpt: 写一个可以用键盘上下左右控制的 带菜单选择的脚本
 
 ### MENU脚本
 
-请加下面代码保存到本地  
-这里我会放一个链接避免失效[menu](https://github.com/yaocccc/scripts/tree/master/lib/menu)
+[menu脚本文件 可以直接保存到本地](/file/menu)
 
-将此代码保存到本地
+若无法下载 则手动编辑本文文件
 
 !!!PS!!!  
 menu()中的 ^C ^M ^[ 分别代表ctrl+c 回车 esc 且不能直接用字符形式输入  
