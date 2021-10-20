@@ -106,9 +106,9 @@ navbar:
 
   menu:
     - { key: "home", link: "/", icon: "iconfont icon-home-fill" }
+    - { key: "category", link: "/categories/", icon: "iconfont icon-category-fill" }
     - { key: "tag", link: "/tags/", icon: "iconfont icon-tags-fill" }
     - { key: "archive", link: "/archives/", icon: "iconfont icon-archive-fill" }
-    - { key: "category", link: "/categories/", icon: "iconfont icon-category-fill" }
     # - { key: "links", link: "/links/", icon: "iconfont icon-link-fill" }
     # - { key: "about", link: "/about/", icon: "iconfont icon-user-fill" }
 
