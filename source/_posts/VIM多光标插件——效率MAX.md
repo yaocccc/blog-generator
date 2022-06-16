@@ -1,7 +1,6 @@
 ---
 title: VIM多光标插件——效率MAX
 date: 2021-05-17 23:19:57
-categories: VIM
 tags: [VIM, NVIM]
 excerpt: VIM多光标插件 —— vim-visual-multi 的配置和使用，以及日常工作中的应用
 mermaid: false

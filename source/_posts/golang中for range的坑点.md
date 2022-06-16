@@ -1,7 +1,6 @@
 ---
 title: golang中for range的坑点
 date: 2021-10-15 16:48:43
-categories: GOLANG
 tags: [GOLANG]
 excerpt: 记录golang中for range的坑点
 ---

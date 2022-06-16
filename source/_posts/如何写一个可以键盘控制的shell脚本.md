@@ -1,7 +1,6 @@
 ---
 title: 写一个可以键盘控制的shell脚本
 date: 2021-10-19 18:47:54
-categories: LINUX
 tags: [LINUX, SHELL]
 excerpt: 写一个可以用键盘上下左右控制的 带菜单选择的脚本
 ---

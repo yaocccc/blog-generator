@@ -1,7 +1,6 @@
 ---
 title: 也许是最便捷的SS客户端
 date: 2021-09-27 10:22:21
-categories: SS
 tags: [LINUX, SS]
 excerpt: 利用v2raya翻山越海
 mermaid: false

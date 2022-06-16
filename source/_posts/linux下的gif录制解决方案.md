@@ -1,7 +1,6 @@
 ---
 title: LINUX下的GIF录制解决方案
 date: 2021-07-16 15:34:14
-categories: LINUX
 tags: [LINUX]
 excerpt: LINUX 环境下利用 byzanz 录制GIF
 mermaid: false

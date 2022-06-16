@@ -1,8 +1,7 @@
 ---
 title: arch安装指定版本的包--降级操作
 date: 2021-10-14 17:56:52
-categories: LINUX
-tags: [LINUX]
+tags: [LINUX, ARCH]
 excerpt: 记录一次arch linux升级的事故 最终以降级部分包版本解决
 ---
 

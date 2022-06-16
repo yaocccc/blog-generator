@@ -1,7 +1,6 @@
 ---
 title: 本地与SSH远程同步VIM剪切板
 date: 2021-09-09 18:34:24
-categories: LINUX
 tags: [LINUX, SSH, VIM]
 excerpt: 也许是最优的同步本地和ssh远程系统剪贴板的解决方案 基于lemonade
 ---
