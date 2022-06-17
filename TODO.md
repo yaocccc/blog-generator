@@ -9,8 +9,9 @@ gihub
 
 nvim 相关
 > - [ ] 宏
-> - [ ] fzf
 > - [ ] vim-visual-multi
+> - [ ] fzf
+> - [ ] 打通本地和远程的剪切板
 > - [ ] copilot + tabnine
 > - [ ] floaterm
 
