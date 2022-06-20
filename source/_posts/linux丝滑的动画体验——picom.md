@@ -49,4 +49,4 @@ sudo ninja -C build install
 
 ## 展示
 
-`TODO: 把B站链接贴到这`
+[视频链接](https://www.bilibili.com/video/bv19T411G7Eq)
