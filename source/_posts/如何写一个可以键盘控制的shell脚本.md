@@ -10,6 +10,7 @@ excerpt: 写一个可以用键盘上下左右控制的 带菜单选择的脚本
 * [写一个可以键盘控制的shell脚本](#写一个可以键盘控制的shell脚本)
   * [MENU脚本](#menu脚本)
     * [MENU脚本讲解](#menu脚本讲解)
+  * [_get_char详解](#get_char详解)
   * [DEMO脚本](#demo脚本)
   * [效果展示](#效果展示)
   * [一些示范脚本](#一些示范脚本)
@@ -35,38 +36,48 @@ menu()中的 ^C ^M ^[ 分别代表ctrl+c 回车 esc 且不能直接用字符形�
 
 ```shell
 # menu
-key=''
-_echo_green() { echo -e "\033[32m$1\033[0m"; }
+_green() { printf "\033[32m$*\033[0m"; }
 _get_char() { SAVEDSTTY=`stty -g`; stty -echo; stty raw; dd if=/dev/tty bs=1 count=1 2> /dev/null; stty -raw; stty echo; stty $SAVEDSTTY; }
 _list() {
+    # 渲染tabs行
     text=''
-    for tab in ${menu_tabs[@]}; do
-        test ${tab} = ${menu_tabs[$tab_index]} && text=$text' \033[32m'$tab'\033[0m'  || text=$text' '$tab
+    for ((i = 0; i < ${#menu_tabs[@]}; i++)); do
+        _tab=${menu_tabs[$i]}
+        [ "$_tab" = "${menu_tabs[$tab_index]}" ] && text="$text $(_green $_tab)" || text="$text $_tab"
     done
-    echo -e $text
 
-    for item in ${menu_items[@]}; do
-        test ${item} = ${menu_items[$item_index]} && _echo_green " > ${item}" || echo "   ${item}"
+    [ "$text" ] && echo -e "   $text\n"
+
+    # 渲染菜单选项行
+    for ((i = 0; i < ${#menu_items[@]}; i++)); do
+        _item=${menu_items[$i]}
+        test "${_item}" = "${menu_items[$item_index]}" && echo -e $(_green " -> ${_item[@]}") || echo "    ${_item[@]}"
     done
 }
 _key() {
-    # 计算新的tab_index
+    # 计算新的tab_index和tab
     tab_index=$(($tab_index+$1))
     len=${#menu_tabs[*]}
     test $tab_index -lt 0 && tab_index=$((len - 1))
     test $tab_index -gt $((len - 1)) && tab_index=0
+    tab=${menu_tabs[$tab_index]}
 
-    # 计算新的item_index
+    # 计算新的item_index和item
     item_index=$(($item_index+$2))
     len=${#menu_items[*]}
     test $item_index -lt 0 && item_index=$((len - 1))
     test $item_index -gt $((len - 1)) && item_index=0
+    item=${menu_items[$item_index]}
 
     clear
 
     pre_hook
     _list
     after_hook
+
+    # 有时会存在pre_hook或after_hook操作了tab或item的情况 需要做一层保护
+    tab=${menu_tabs[$tab_index]}
+    item=${menu_items[$item_index]}
 }
 
 ###############################################
@@ -103,7 +114,7 @@ menu() {
 
 ```plaintext
 # 用到的依赖func，这些不允许用户自定义或主动调用
-_echo_green(): 用于打印绿色文本
+_green(): 用于打印绿色文本
 _get_char(): 用于从键盘获取操作
 _list(): 渲染菜单
 _key(): 计算新的tab_index、item_index并渲染菜单的func
@@ -117,7 +128,23 @@ after_hook(): 发生在渲染菜单后的钩子方法
 # 用户可使用的变量和func
 tab_index: 当前的tab索引号 从0开始
 item_index: 当前的item索引号 从0开始
+tab: 当前的tab
+item: 当前的item
 menu(): 进入菜单选择状态的入口func
+```
+
+### _get_char详解
+
+```shell
+_get_char() {
+  SAVEDSTTY=`stty -g`; # 保存tty设置
+  stty -echo;          # tty 关闭回显
+  stty raw;            # tty 开启raw模式
+  dd if=/dev/tty bs=1 count=1 2> /dev/null; # 读取一个输入
+  stty -raw;           # tty 关闭raw模式
+  stty echo;           # tty 开始回显
+  stty $SAVEDSTTY;     # 还原tty设置
+}
 ```
 
 ### DEMO脚本
@@ -147,8 +174,8 @@ menu(): 进入菜单选择状态的入口func
 
 快速连接远程服务器  
 
-./ssh.sh ls 开始菜单选择对应命令执行  
-./ssh.sh \*非ls 直接执行 ssh *
+./ssh.sh 开始菜单选择对应命令执行  
+./ssh.sh \*非空 直接执行 ssh *
 
 ```shell
 #!/bin/bash
@@ -170,7 +197,7 @@ after_hook() {
 }
 
 case $1 in
-    ls)
+    '')
         menu
         echo 连接${menu_items[$item_index]}
         exec ${cmds[$item_index]}

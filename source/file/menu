@@ -1,44 +1,47 @@
-:<<!
- author: chenyc
- date: 2021/09/15
-
- 使用说明: https://yaocc.cc/2021/10/19/如何写一个可以键盘控制的shell脚本/
-!
-
 ###############################################
 
-key=''
-_echo_green() { echo -e "\033[32m$1\033[0m"; }
+_green() { printf "\033[32m$*\033[0m"; }
 _get_char() { SAVEDSTTY=`stty -g`; stty -echo; stty raw; dd if=/dev/tty bs=1 count=1 2> /dev/null; stty -raw; stty echo; stty $SAVEDSTTY; }
 _list() {
+    # 渲染tabs行
     text=''
-    for tab in ${menu_tabs[@]}; do
-        test ${tab} = ${menu_tabs[$tab_index]} && text=$text' \033[32m'$tab'\033[0m'  || text=$text' '$tab
+    for ((i = 0; i < ${#menu_tabs[@]}; i++)); do
+        _tab=${menu_tabs[$i]}
+        [ "$_tab" = "${menu_tabs[$tab_index]}" ] && text="$text $(_green $_tab)" || text="$text $_tab"
     done
-    echo -e $text
 
-    for item in ${menu_items[@]}; do
-        test ${item} = ${menu_items[$item_index]} && _echo_green " > ${item}" || echo "   ${item}"
+    [ "$text" ] && echo -e "   $text\n"
+
+    # 渲染菜单选项行
+    for ((i = 0; i < ${#menu_items[@]}; i++)); do
+        _item=${menu_items[$i]}
+        test "${_item}" = "${menu_items[$item_index]}" && echo -e $(_green " -> ${_item[@]}") || echo "    ${_item[@]}"
     done
 }
 _key() {
-    # 计算新的tab_index
+    # 计算新的tab_index和tab
     tab_index=$(($tab_index+$1))
     len=${#menu_tabs[*]}
     test $tab_index -lt 0 && tab_index=$((len - 1))
     test $tab_index -gt $((len - 1)) && tab_index=0
+    tab=${menu_tabs[$tab_index]}
 
-    # 计算新的item_index
+    # 计算新的item_index和item
     item_index=$(($item_index+$2))
     len=${#menu_items[*]}
     test $item_index -lt 0 && item_index=$((len - 1))
     test $item_index -gt $((len - 1)) && item_index=0
+    item=${menu_items[$item_index]}
 
     clear
 
     pre_hook
     _list
     after_hook
+
+    # 有时会存在pre_hook或after_hook操作了tab或item的情况 需要做一层保护
+    tab=${menu_tabs[$tab_index]}
+    item=${menu_items[$item_index]}
 }
 
 ###############################################
