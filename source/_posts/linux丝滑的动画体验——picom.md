@@ -12,11 +12,12 @@ index_img: /img/picom/picom.gif
 * [picom](#picom)
 * [安装](#安装)
 * [启动](#启动)
-* [展示](#展示)
 
 <!-- markdown-toc -->
 
 ## picom
+
+[视频链接](https://www.bilibili.com/video/bv19T411G7Eq)
 
 xserver的窗口效果合成器, fork自 compton
 
@@ -47,7 +48,3 @@ sudo ninja -C build install
 ## 启动
 
 `picom --experimental-backends --config ~/scripts/config/picom.conf`
-
-## 展示
-
-[视频链接](https://www.bilibili.com/video/bv19T411G7Eq)

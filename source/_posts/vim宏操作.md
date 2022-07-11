@@ -20,6 +20,8 @@ mermaid: false
 
 ## vim宏操作
 
+[vim宏操作和多光标插件](https://www.bilibili.com/video/BV1uF411c7Ro/)
+
 > **建议看完本文的相关文字说明后 仔细看一下文末的demo和gif演示图**  
 
 宏操作是vim中一个可以 录制并调用 按键组合的一个操作  

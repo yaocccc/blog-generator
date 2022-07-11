@@ -18,6 +18,8 @@ mermaid: false
 
 ## 插件简介 [mg979/vim-visual-multi](https://github.com/mg979/vim-visual-multi)
 
+[vim宏操作和多光标插件](https://www.bilibili.com/video/BV1uF411c7Ro/)
+
 ```plaintext
   VIM多光标插件，提供vim/nvim快速操作多光标编辑的能力
   本POST会简单介绍 其 安装、配置、日常使用的过程。

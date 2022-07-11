@@ -18,11 +18,11 @@ index_img: /img/rofi/rofi.png
 
 ## ROFI
 
+可观看bilibili视频 [BV1ag411Q7Po](https://www.bilibili.com/video/BV1ag411Q7Po/)
+
 rofi--一个窗口切换器、应用启动器、dmenu的替代品
 
 [git仓库](https://github.com/davatorium/rofi#modes)
-
-可观看bilibili视频 [BV1ag411Q7Po](https://www.bilibili.com/video/BV1ag411Q7Po/)
 
 ## 用自定义脚本实现 rofi自定义菜单和选项
 
