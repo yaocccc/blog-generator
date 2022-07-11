@@ -4,7 +4,7 @@ date: 2022/07/05 00:46:20
 tags: [LINUX, DWM, WINE]
 excerpt: 适合arch linux的qq、微信、企业微信-wine
 mermaid: false
-index_img: /img/wine.png
+index_img: /img/wine/wine.png
 ---
 
 <!-- markdown-toc GitLab -->

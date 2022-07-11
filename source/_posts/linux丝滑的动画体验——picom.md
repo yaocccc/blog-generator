@@ -4,6 +4,7 @@ date: 2022/06/19 20:42:48
 tags: [LINUX, PICOM, 桌面美化]
 excerpt: xserver的窗口效果器 动画、透明、模糊、圆角
 mermaid: false
+index_img: /img/picom/picom.gif
 ---
 
 <!-- markdown-toc GitLab -->

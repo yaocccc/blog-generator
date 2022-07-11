@@ -3,6 +3,7 @@ title: 写一个可以键盘控制的shell脚本
 date: 2021-10-19 18:47:54
 tags: [LINUX, SHELL]
 excerpt: 写一个可以用键盘上下左右控制的 带菜单选择的脚本
+index_img: /img/menu/menu.gif
 ---
 
 <!-- markdown-toc GitLab -->
@@ -18,6 +19,8 @@ excerpt: 写一个可以用键盘上下左右控制的 带菜单选择的脚本
 <!-- markdown-toc -->
 
 ## 写一个可以键盘控制的shell脚本
+
+![show](/img/menu/menu.gif)
 
 ### MENU脚本
 

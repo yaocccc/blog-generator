@@ -4,7 +4,7 @@ date: 2022/06/19 20:42:17
 tags: [LINUX, DWM, ROFI, 桌面美化]
 excerpt: rofi实现自定义菜单选项和操作、像fzf一样使用rofi
 mermaid: false
-index_img: /img/rofi.png
+index_img: /img/rofi/rofi.png
 ---
 
 <!-- markdown-toc GitLab -->

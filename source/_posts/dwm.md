@@ -3,11 +3,15 @@ title: dwm简介和如何安装使用
 date: 2022-07-10 23:48:54
 tags: [LINUX, DWM]
 excerpt: 'dwm: what、why、how?'
-index_img: /img/dwm.png
+index_img: /img/dwm/dwm.png
 mermaid: false
 ---
 
 ## DWM
+
+[DWM系列1——个人向DWM、arch linux展示](https://www.bilibili.com/video/BV1Ef4y1Z7kA/)
+
+[DWM系列2——我为什么使用dwm、dwm初体验(最简化安装)](https://www.bilibili.com/video/BV1jN4y1u7ui/)
 
 ### WHAT
 
