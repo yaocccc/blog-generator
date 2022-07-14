@@ -29,7 +29,7 @@ index_img: /img/wine/wine.png
 1. 微信聊天窗口中的字体变成方块  
     `cp WeiRuanYaHei-1.ttf ~/.deepinwine/xxx/drive_c/windows/Fonts`  
     这里的xxx是对应的软件目录  
-    [文件下载地址](/file/menu)
+    [文件下载地址](/file/WeiRuanYaHei-1.ttf)
 
 2. 窗口周围出现奇怪的黑色或透明边框 只需要修改  
     ```plaintext
