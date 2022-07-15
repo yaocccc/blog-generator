@@ -18,6 +18,8 @@ index_img: /img/wine/wine.png
 
 ## 适合arch linux的qq、微信、企业微信
 
+[arch linux 使用 qq、微信、企业微信 踩坑向](https://www.bilibili.com/video/BV1Z3411F7TL/)
+
 ```plaintext
   yay -S com.qq.tim.spark
   yay -S deepin-wine-wechat
