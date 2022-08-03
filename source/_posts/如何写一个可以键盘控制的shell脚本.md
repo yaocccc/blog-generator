@@ -20,6 +20,7 @@ index_img: /img/menu/menu.gif
 
 ## 写一个可以键盘控制的shell脚本
 
+[bilibili视频链接](https://www.bilibili.com/video/BV11r4y1g73U/)  
 ![show](/img/menu/menu.gif)
 
 ### MENU脚本
