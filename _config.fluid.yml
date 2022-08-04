@@ -136,6 +136,11 @@ footer:
     <a href="https://github.com" target="_blank" rel="nofollow noopener"><span>Github</span></a>
     <i class="iconfont icon-love"></i>
     <a href="https://github.com/yaocccc" target="_blank" rel="nofollow noopener"><span>yaocccc</span></a>
+    <div style="font-size: 0.85rem; margin-top:10px">
+      <span id="timeDate">载入天数...</span>
+      <span id="times">载入时分秒...</span>
+      <script src="/js/duration.js"></script>
+    </div>
   '
   statistics:
     enable: true
