@@ -1,0 +1,84 @@
+---
+title: docker容器内运行linux系统，并通过vnc暴露图形化界面
+date: 2022/08/10 16:49:04
+tags: [LINUX, VNC, DOCKER]
+excerpt: 利用vnc暴露docker容器内的图形化界面
+mermaid: false
+index_img: /img/docker/gui.png
+---
+
+## DOCKER容器运行linux系统 并暴露vnc图形化界面
+
+![show](/img/docker/gui.png)
+
+可观看bilibili视频 [BV1Ra411o7yq](https://www.bilibili.com/video/BV1Ra411o7yq/)
+
+## 过程
+
+docker运行linux系统 已archlinux举例
+
+```plaintext
+docker run -it -p 5901:5901 --name arch arch
+```
+
+此处的-p 5901:5901 是暴露docker容器的5901端口到本地 5901 为vncserver :1 对应的端口
+
+## 初始化archlinux相关的环境和包
+
+初始化archlinuxcn源
+
+```plaintext
+echo '
+[archlinuxcn]
+SigLevel = Never
+Include = /etc/pacman.d/cnmirrorlist' >> /etc/pacman.conf
+echo 'Server = https://mirrors.ustc.edu.cn/$repo/$arch
+Server = https://mirrors.tuna.tsinghua.edu.cn/$repo/$arch' >> /etc/pacman.d/cnmirrorlist
+```
+
+安装基础包
+
+```plaintext
+pacman -Sy
+pacman -S yay
+yay -S xorg make gcc vim git
+yay -S nerd-fonts-jetbrains-mono
+yay -S ttf-material-design-icons
+yay -S ttf-joypixels
+yay -S wqy-microhei
+```
+
+## 安装图形画界面并开启vnc服务
+
+安装图形化界面 以dwm举例
+
+```plaintext
+cd ~/dwm
+make install
+```
+
+安装并配置vncserver
+
+```plaintext
+yay -S tigervnc
+vncpasswd
+echo 'session=dwm' >> ~/.vnc/config
+mkdir -p /usr/share/xsessions
+echo '[Desktop Entry]
+Encoding=UTF-8
+Name=Dwm
+Comment=Dynamic window manager
+Exec=dwm
+Icon=dwm
+Type=XSession' > /usr/share/xsessions/dwm.desktop
+
+# 启动命令
+vncserver :1
+
+# 也可以在docker外运行这个命令
+docker exec -u root -d arch bash -c '/usr/sbin/vncserver :1'
+```
+
+## 在自己本地的电脑上访问
+
+也安装tigervnc 然后运行vncviwer即可
