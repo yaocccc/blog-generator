@@ -46,3 +46,15 @@ dynamic window manager
 5. 从tty进入 dwm
 
     `startx`
+
+### 装的字体
+
+```plaintext
+yay -S wqy-microhei
+yay -S wps-office-mui-zh-cn
+yay -S ttf-wps-fonts
+yay -S nerd-fonts-jetbrains-mono
+yay -S ttf-material-design-icons
+yay -S ttf-joypixels
+yay -S ttf-dejavu
+```

@@ -10,7 +10,7 @@
     "push": "hexo clean;hexo g;hexo d"
   },
   "hexo": {
-    "version": "5.4.0"
+    "version": "5.4.2"
   },
   "dependencies": {
     "hexo": "^5.0.0",
