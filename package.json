@@ -10,10 +10,10 @@
     "push": "hexo clean;hexo g;cp ./source/README ./public/README.md;hexo d"
   },
   "hexo": {
-    "version": "5.4.2"
+    "version": "6.3.0"
   },
   "dependencies": {
-    "hexo": "^5.0.0",
+    "hexo": "6.3.0",
     "hexo-deployer-git": "^3.0.0",
     "hexo-generator-archive": "^2.0.0",
     "hexo-generator-index": "^3.0.0",
