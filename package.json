@@ -7,7 +7,7 @@
     "clean": "hexo clean",
     "deploy": "hexo deploy",
     "start": "hexo server",
-    "push": "hexo clean;hexo g;hexo d"
+    "push": "hexo clean;hexo g;cp ./source/README ./public/README.md;hexo d"
   },
   "hexo": {
     "version": "5.4.2"
