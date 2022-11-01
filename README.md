@@ -6,6 +6,16 @@
 
 edit ./posts/*.md
 
-## 发布
+## 自定义
 
-npm run push
+```plaintext
+  变更 _config.yml 最后的github仓库地址 即可将静态页面推送到指定仓库
+```
+
+## 使用
+
+```plaintext
+  初始化: yarn
+  本地调试: yarn start
+  构建并推送: yarn push
+```
