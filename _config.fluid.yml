@@ -161,8 +161,8 @@ footer:
 #---------------------------
 index:
   banner_img: /img/banner.png
-  banner_img_height: 50
-  banner_mask_alpha: 0.3
+  banner_img_height: 100
+  banner_mask_alpha: 0
 
   slogan:
     enable: true
