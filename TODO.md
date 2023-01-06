@@ -15,7 +15,7 @@ nvim 相关
 > - [x] 宏
 > - [x] vim-visual-multi
 > - [ ] fzf
-> - [ ] 打通本地和远程的剪切板
+> - [x] 打通本地和远程的剪切板
 > - [ ] floaterm
 > - [ ] vim正确的markdown体验
 
